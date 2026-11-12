@@ -1,0 +1,64 @@
+ticket_id,asset_type,description,target_severity,target_category,source
+T001,solar,"Inverter 4 tripping repeatedly after noon, high temperature alarm visible",high,inverter_thermal,bundled
+T002,wind,Gearbox vibration has increased for turbine WTG-12 with abnormal noise,critical,gearbox_vibration,bundled
+T003,hydro,Inspection checklist pending for spillway gate maintenance,medium,inspection_compliance,bundled
+T004,solar,SCADA data missing for block 3 for last two hours,medium,data_gap,bundled
+T005,wind,Blade pitch error after high wind gust event,high,pitch_system,bundled
+T006,grid,Curtailment instruction not reflected in generation dashboard,medium,grid_curtailment,bundled
+T007,solar,"Inverter 7 derating during afternoon, heatsink temperature alarm active",high,inverter_thermal,synthetic_added
+T008,solar,"String inverter overtemperature fault, cooling fan not spinning at block 2",high,inverter_thermal,synthetic_added
+T009,solar,Inverter 2 shows high temperature warning but still producing at full output,medium,inverter_thermal,synthetic_added
+T010,solar,"Repeated inverter trips on overheating across three units, plant output reduced",critical,inverter_thermal,synthetic_added
+T011,solar,"Inverter enclosure hot to touch, thermal derating observed since morning",high,inverter_thermal,synthetic_added
+T012,solar,Minor temperature alarm on inverter 9 cleared by itself after an hour,low,inverter_thermal,synthetic_added
+T013,solar,"Central inverter cooling filter clogged with dust, temperature trending up",medium,inverter_thermal,synthetic_added
+T014,wind,WTG-07 gearbox oil temperature high with rising vibration levels,critical,gearbox_vibration,synthetic_added
+T015,wind,Abnormal grinding noise from gearbox on turbine WTG-03,critical,gearbox_vibration,synthetic_added
+T016,wind,Vibration sensor on gearbox high-speed shaft reading above alarm threshold,high,gearbox_vibration,synthetic_added
+T017,wind,"Slight increase in gearbox vibration trend on WTG-19, still within limits",medium,gearbox_vibration,synthetic_added
+T018,wind,"Gearbox oil sample shows metal particles, vibration analysis requested",high,gearbox_vibration,synthetic_added
+T019,wind,Turbine WTG-22 stopped on gearbox vibration trip and will not restart,critical,gearbox_vibration,synthetic_added
+T020,wind,Routine vibration reading marginally higher than last month on WTG-05 gearbox,low,gearbox_vibration,synthetic_added
+T021,hydro,Annual dam safety inspection report overdue for submission,medium,inspection_compliance,synthetic_added
+T022,hydro,Penstock inspection checklist not signed off by supervisor,medium,inspection_compliance,synthetic_added
+T023,wind,"Statutory crane load test certificate expires next month, renewal pending",medium,inspection_compliance,synthetic_added
+T024,solar,Quarterly thermography inspection of combiner boxes not yet scheduled,low,inspection_compliance,synthetic_added
+T025,hydro,Fire extinguisher inspection tags outdated in powerhouse,low,inspection_compliance,synthetic_added
+T026,grid,Substation earthing test record missing from compliance register,medium,inspection_compliance,synthetic_added
+T027,hydro,"Statutory inspection of spillway gate overdue by 30 days, regulator notice received",high,inspection_compliance,synthetic_added
+T028,solar,"SCADA communication lost for block 5, no data since morning",medium,data_gap,synthetic_added
+T029,wind,Missing 10-minute data for turbines WTG-10 to WTG-14 in historian,medium,data_gap,synthetic_added
+T030,hydro,Reservoir level telemetry shows flat line for the last 6 hours,high,data_gap,synthetic_added
+T031,solar,"Weather station data not updating on dashboard, irradiance blank",low,data_gap,synthetic_added
+T032,wind,"SCADA gateway offline, entire wind farm data missing for two hours",high,data_gap,synthetic_added
+T033,solar,"Gaps in energy meter readings for the previous night, back-filling needed",low,data_gap,synthetic_added
+T034,grid,Substation RTU not reporting breaker status to control room,high,data_gap,synthetic_added
+T035,wind,"Pitch system fault on blade 2 of WTG-08, turbine in pause",high,pitch_system,synthetic_added
+T036,wind,"Blade pitch angle mismatch alarm after storm, turbine derated",high,pitch_system,synthetic_added
+T037,wind,"Pitch motor current high on WTG-15, intermittent alarm",medium,pitch_system,synthetic_added
+T038,wind,"Pitch battery backup test failed on WTG-11, blade may not feather in emergency",critical,pitch_system,synthetic_added
+T039,wind,"Pitch controller communication error, auto reset successful",low,pitch_system,synthetic_added
+T040,wind,Blade pitch encoder fault logged twice this week on WTG-02,medium,pitch_system,synthetic_added
+T041,wind,"Pitch bearing grease low warning, scheduled lubrication due",low,pitch_system,synthetic_added
+T042,grid,"Curtailment signal from load dispatch not applied, plant exporting above limit",high,grid_curtailment,synthetic_added
+T043,grid,Generation dashboard does not show curtailed MW for last hour,medium,grid_curtailment,synthetic_added
+T044,grid,Backdown instruction mismatch between SLDC schedule and plant setpoint,high,grid_curtailment,synthetic_added
+T045,solar,Curtailment loss report differs from SCADA values by a small margin,low,grid_curtailment,synthetic_added
+T046,grid,"Ramp rate limit command not accepted by plant controller, grid operator informed",high,grid_curtailment,synthetic_added
+T047,wind,"Curtailment flag stuck on after instruction was withdrawn, generation held back",medium,grid_curtailment,synthetic_added
+T048,grid,Reactive power instruction from grid operator not reflected in dashboard,medium,grid_curtailment,synthetic_added
+T049,grid,Transformer oil temperature alarm at 33/220 kV substation,high,transformer_fault,synthetic_added
+T050,grid,"Buchholz relay operated on main power transformer, unit tripped",critical,transformer_fault,synthetic_added
+T051,solar,Pad-mount transformer humming loudly with oil seepage at bushing,high,transformer_fault,synthetic_added
+T052,grid,Dissolved gas analysis shows rising acetylene in transformer oil,critical,transformer_fault,synthetic_added
+T053,wind,"Turbine transformer winding temperature warning, load reduced",medium,transformer_fault,synthetic_added
+T054,grid,"Minor oil leak at transformer radiator valve, level still normal",low,transformer_fault,synthetic_added
+T055,grid,"Transformer tap changer stuck, voltage regulation affected",high,transformer_fault,synthetic_added
+T056,solar,"Smoke observed from combiner box near block 4, area cordoned off",critical,safety_hazard,synthetic_added
+T057,wind,"Technician reported oil spill on nacelle floor, slip hazard and fire risk",high,safety_hazard,synthetic_added
+T058,hydro,"Powerhouse gas leak alarm triggered, staff evacuated",critical,safety_hazard,synthetic_added
+T059,solar,Exposed live cable found near perimeter fence after rodent damage,high,safety_hazard,synthetic_added
+T060,grid,"Fire at switchyard cable trench, fire brigade called",critical,safety_hazard,synthetic_added
+T061,wind,Loose handrail on tower ladder platform reported by service team,medium,safety_hazard,synthetic_added
+T062,hydro,Missing warning signage near spillway gate access,low,safety_hazard,synthetic_added
+T063,solar,"Burnt smell and sparking from DC junction box, injury risk to cleaning crew",critical,safety_hazard,synthetic_added
