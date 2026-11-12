@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maintenance Ticket Triage Agent</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#172033;--mut:#5b6678;--line:#e2e6ee;--brand:#12372a}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1720;--card:#18222e;--ink:#e6ebf2;--mut:#9aa7b8;--line:#2b3846;--brand:#2f8f68}}
+*{box-sizing:border-box}body{font-family:system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:var(--ink)}
+header{background:#12372a;color:#fff;padding:24px 32px}header h1{margin:0 0 4px;font-size:24px}header p{margin:0;opacity:.85}
+main{max-width:1000px;margin:0 auto;padding:24px;display:grid;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+h2{margin:0 0 12px;font-size:17px}label{font-size:13px;color:var(--mut)}
+textarea,select{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}
+textarea{min-height:90px;margin:6px 0 12px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:160px}
+button{background:var(--brand);color:#fff;border:0;border-radius:8px;padding:10px 16px;cursor:pointer;font:inherit}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);padding:6px 10px;font-size:13px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{display:inline-block;padding:4px 12px;border-radius:999px;font-weight:600;font-size:13px;color:#fff}
+.critical{background:#b91c1c}.high{background:#c2410c}.medium{background:#a16207}.low{background:#15803d}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.kv{border:1px solid var(--line);border-radius:10px;padding:12px}.kv b{display:block;font-size:12px;color:var(--mut);margin-bottom:4px;font-weight:500}
+.warn{border-left:4px solid #c2410c;background:rgba(194,65,12,.1);padding:10px 12px;border-radius:6px;margin-top:12px}
+.step{border-left:3px solid var(--brand);padding:4px 12px;margin:8px 0;font-size:14px}.step code{font-size:12px;color:var(--mut);word-break:break-word}
+table{border-collapse:collapse;width:100%;font-size:14px}td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+small{color:var(--mut)}
+</style></head><body>
+<header><h1>Maintenance Ticket Triage Agent</h1><p>Classifies, prioritises and routes renewable-energy maintenance tickets (tool-calling agent, no LLM)</p></header>
+<main>
+<section class="card"><h2>1. Submit a ticket</h2>
+<div class="row"><div style="flex:3"><label for="txt">Ticket description</label>
+<textarea id="txt" placeholder="e.g. Gearbox vibration has increased for turbine WTG-12 with abnormal noise"></textarea></div>
+<div><label for="asset">Asset type</label><select id="asset"><option>unknown</option><option>solar</option><option>wind</option><option>hydro</option><option>grid</option></select>
+<div style="margin-top:12px"><button onclick="go()">Triage ticket</button></div></div></div>
+<small>Try an example:</small><div class="chips" id="chips"></div></section>
+<section class="card" id="res" hidden><h2>2. Triage result</h2><div id="out"></div></section>
+<section class="card"><h2>Evaluation (cross-validated, 63 tickets)</h2><div id="ev"><small>Loading…</small></div></section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function go(){
+  const text=$('txt').value.trim(); if(!text){$('txt').focus();return;}
+  $('res').hidden=false; $('out').innerHTML='<small>Running agent…</small>';
+  try{
+    const r=await fetch('/api/triage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,asset_type:$('asset').value})});
+    if(!r.ok) throw new Error((await r.json()).detail||r.status);
+    show(await r.json());
+  }catch(e){$('out').innerHTML='<div class="warn">Request failed: '+esc(e.message)+'</div>';}
+}
+function show(d){
+  const trace=d.trace.map((t,i)=>`<div class="step"><b>${i+1}. ${esc(t.tool)}</b><br><code>${esc(JSON.stringify(t.output))}</code></div>`).join('');
+  $('out').innerHTML=`
+  <div class="grid">
+   <div class="kv"><b>Severity</b><span class="badge ${esc(d.severity)}">${esc(d.severity.toUpperCase())}</span> <small>score ${d.severity_score}/100</small></div>
+   <div class="kv"><b>Category</b>${esc(d.category)} <small>(${esc(d.category_source)}, conf ${d.category_confidence})</small></div>
+   <div class="kv"><b>Route to</b>${esc(d.route_to)}</div>
+   <div class="kv"><b>Response SLA</b>${d.sla_response_hours} hours</div></div>
+  <div class="kv" style="margin-top:12px"><b>Probable root cause</b>${esc(d.probable_root_cause)}</div>
+  <div class="kv" style="margin-top:12px"><b>Recommended next action</b>${esc(d.recommended_next_action)}</div>
+  ${d.escalate_to_hse?'<div class="warn"><b>Safety escalation:</b> HSE notified per safety keywords/category.</div>':''}
+  ${d.needs_human_review?'<div class="warn"><b>Low confidence:</b> please have a duty engineer review this ticket.</div>':''}
+  <h2 style="margin-top:18px">Agent reasoning trace</h2>${trace}<small>${esc(d.disclaimer)}</small>`;
+}
+async function init(){
+  try{const s=await (await fetch('/api/samples')).json();
+   $('chips').innerHTML=s.map((x,i)=>`<button class="ghost" data-i="${i}">${esc(x.description.slice(0,48))}…</button>`).join('');
+   $('chips').onclick=e=>{const b=e.target.closest('button');if(!b)return;const x=s[b.dataset.i];$('txt').value=x.description;$('asset').value=x.asset_type;go();};}catch(e){}
+  try{const d=await (await fetch('/api/evaluation')).json();
+   const row=(n,k)=>`<tr><td>${n}</td><td>${(d[k].accuracy_mean*100).toFixed(1)}%</td><td>${d[k].macro_f1_mean.toFixed(2)}</td></tr>`;
+   $('ev').innerHTML=`<table><tr><th>Model</th><th>Accuracy</th><th>Macro-F1</th></tr>
+    ${row('Category – majority baseline','cat_majority')}${row('Category – TF-IDF + LogReg (ML only)','cat_tfidf_lr')}${row('Category – full agent (ML + keyword fallback)*','agent_cat')}
+    ${row('Severity – majority baseline','sev_majority')}${row('Severity – TF-IDF + LogReg','sev_tfidf_lr')}${row('Severity – full agent (rule scorer)','agent_sev')}</table>
+    <p><small>Severity within ±1 band: ${(d.agent_severity_within_one_band*100).toFixed(0)}%. ${esc(d.cv)}. *Keyword rules were written after viewing the data, so this figure is optimistic; the ML-only row is the fairer estimate. Dataset is mostly synthetic.</small></p>`;
+  }catch(e){$('ev').innerHTML='<small>Run <code>python -m backend.evaluate</code> to generate results.</small>';}
+}
+init();
+</script></body></html>
