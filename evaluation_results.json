@@ -1,0 +1,181 @@
+{
+  "cat_majority": {
+    "accuracy_mean": 0.079,
+    "accuracy_std": 0.003,
+    "macro_f1_mean": 0.018
+  },
+  "cat_keyword_rules": {
+    "accuracy_mean": 0.984,
+    "accuracy_std": 0.033,
+    "macro_f1_mean": 0.973
+  },
+  "cat_tfidf_lr": {
+    "accuracy_mean": 0.837,
+    "accuracy_std": 0.098,
+    "macro_f1_mean": 0.813
+  },
+  "sev_majority": {
+    "accuracy_mean": 0.237,
+    "accuracy_std": 0.087,
+    "macro_f1_mean": 0.094
+  },
+  "sev_tfidf_lr": {
+    "accuracy_mean": 0.31,
+    "accuracy_std": 0.127,
+    "macro_f1_mean": 0.231
+  },
+  "sev_rule_scorer": {
+    "accuracy_mean": 0.522,
+    "accuracy_std": 0.138,
+    "macro_f1_mean": 0.469
+  },
+  "agent_cat": {
+    "accuracy_mean": 0.973,
+    "accuracy_std": 0.049,
+    "macro_f1_mean": 0.967
+  },
+  "agent_sev": {
+    "accuracy_mean": 0.527,
+    "accuracy_std": 0.138,
+    "macro_f1_mean": 0.495
+  },
+  "cat_ml_only_agent_path": {
+    "accuracy_mean": 0.971,
+    "accuracy_std": 0.048,
+    "macro_f1_mean": 0.0
+  },
+  "agent_severity_within_one_band": 0.937,
+  "share_of_tickets_handled_by_ml_without_fallback": 0.698,
+  "n_tickets": 63,
+  "cv": "5-fold stratified x 3 repeats",
+  "most_frequent_failures": [
+    {
+      "ticket_id": "T001",
+      "times_wrong": 3,
+      "description": "Inverter 4 tripping repeatedly after noon, high temperature alarm visible",
+      "detail": "cat inverter_thermal->inverter_thermal; sev high->critical"
+    },
+    {
+      "ticket_id": "T015",
+      "times_wrong": 3,
+      "description": "Abnormal grinding noise from gearbox on turbine WTG-03",
+      "detail": "cat gearbox_vibration->gearbox_vibration; sev critical->high"
+    },
+    {
+      "ticket_id": "T034",
+      "times_wrong": 3,
+      "description": "Substation RTU not reporting breaker status to control room",
+      "detail": "cat data_gap->data_gap; sev high->medium"
+    },
+    {
+      "ticket_id": "T039",
+      "times_wrong": 3,
+      "description": "Pitch controller communication error, auto reset successful",
+      "detail": "cat pitch_system->pitch_system; sev low->medium"
+    },
+    {
+      "ticket_id": "T061",
+      "times_wrong": 3,
+      "description": "Loose handrail on tower ladder platform reported by service team",
+      "detail": "cat safety_hazard->safety_hazard; sev medium->high"
+    },
+    {
+      "ticket_id": "T012",
+      "times_wrong": 3,
+      "description": "Minor temperature alarm on inverter 9 cleared by itself after an hour",
+      "detail": "cat inverter_thermal->inverter_thermal; sev low->high"
+    }
+  ],
+  "category_confusion_labels": [
+    "data_gap",
+    "gearbox_vibration",
+    "grid_curtailment",
+    "inspection_compliance",
+    "inverter_thermal",
+    "pitch_system",
+    "safety_hazard",
+    "transformer_fault"
+  ],
+  "category_confusion_matrix": [
+    [
+      24,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      24,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      24,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      23,
+      0,
+      0,
+      1,
+      0
+    ],
+    [
+      1,
+      0,
+      0,
+      0,
+      23,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      24,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      3,
+      0,
+      0,
+      21,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      21
+    ]
+  ]
+}
